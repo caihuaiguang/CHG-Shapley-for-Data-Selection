@@ -1,3 +1,18 @@
+
+## CHG-Shapley-for-Data-Selection
+This is the code of CHG Shapley used in data selection. 
+
+Please run the `run_.py` file in the root directory to reproduce the results. The original results are in the `results` directory.
+
+```
+python run_normal.py 
+python run_imb.py 
+python run_noise.py 
+```
+
+CHG Shapley selection strategy is implemented in `cords/selectionstrategies/SL/shapisstrategy_10.py`.
+
+## Cords
 <p align="center">
     <br>
         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp

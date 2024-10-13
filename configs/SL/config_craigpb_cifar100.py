@@ -15,7 +15,7 @@ config = dict(setting="SL",
                          numclasses=100),
               
               ckpt=dict(is_load=False,
-                        is_save=True,
+                        is_save=False,
                         dir='results/',
                         save_every=20),
               

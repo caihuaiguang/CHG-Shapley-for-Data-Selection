@@ -1,5 +1,6 @@
 from .adaptivedataloader import AdaptiveDSSDataLoader
 from .glisterdataloader import GLISTERDataLoader
+from .shapisdataloader import SHAPISDataLoader
 from .gradmatchdataloader import GradMatchDataLoader
 from .craigdataloader import CRAIGDataLoader
 from .adaptiverandomdataloader import AdaptiveRandomDataLoader

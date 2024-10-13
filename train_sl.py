@@ -13,13 +13,15 @@ from ray import tune
 from cords.selectionstrategies.helpers.ssl_lib.param_scheduler import scheduler as step_scheduler
 from cords.utils.data.data_utils import WeightedSubset
 from cords.utils.data.dataloader.SL.adaptive import GLISTERDataLoader, AdaptiveRandomDataLoader, StochasticGreedyDataLoader,\
-    CRAIGDataLoader, GradMatchDataLoader, RandomDataLoader, WeightedRandomDataLoader, MILODataLoader, SELCONDataLoader
+    CRAIGDataLoader, GradMatchDataLoader, SHAPISDataLoader, RandomDataLoader, WeightedRandomDataLoader, MILODataLoader, SELCONDataLoader
 from cords.utils.data.dataloader.SL.nonadaptive import FacLocDataLoader, MILOFixedDataLoader
 from cords.utils.data.datasets.SL import gen_dataset
 from cords.utils.models import *
 from cords.utils.data.data_utils.collate import *
 import pickle
 from datetime import datetime
+torch.manual_seed(42)
+np.random.seed(42)
 
 class TrainClassifier:
     def __init__(self, config_file_data):
@@ -30,6 +32,18 @@ class TrainClassifier:
             subset_selection_name = self.cfg.dss_args.type + "_" + self.cfg.dss_args.submod_function + "_" + str(self.cfg.dss_args.kw)
         elif self.cfg.dss_args.type in ['MILO']:
             subset_selection_name = self.cfg.dss_args.type + "_" + self.cfg.dss_args.submod_function + "_" + str(self.cfg.dss_args.gc_ratio) + "_" + str(self.cfg.dss_args.kw)
+        elif self.cfg.dss_args.type in ['SHAPIS']:
+            if self.cfg.dss_args.varients == "CHGShapley":
+                self.cfg.dss_args.type = "SHAPIS"
+            elif self.cfg.dss_args.varients == "HardnessShapley":
+                self.cfg.dss_args.type = "SHAPIS_H"
+            elif self.cfg.dss_args.varients == "GradientShapley":
+                self.cfg.dss_args.type =  "SHAPIS_G"
+            elif self.cfg.dss_args.varients == "TracIn":
+                self.cfg.dss_args.type = "TracIn"
+            elif self.cfg.dss_args.varients == "Cosine":
+                self.cfg.dss_args.type = "Cosine"
+            subset_selection_name = self.cfg.dss_args.type
         else:
             subset_selection_name = self.cfg.dss_args.type
             
@@ -228,7 +242,8 @@ class TrainClassifier:
             else:
                 trainset, validset, testset, num_cls = gen_dataset(self.cfg.dataset.datadir,
                                                                 self.cfg.dataset.name,
-                                                                self.cfg.dataset.feature, dataset=self.cfg.dataset)
+                                                                self.cfg.dataset.feature,
+                                                                noise_ratio=self.cfg.dataset.noise_ratio, dataset=self.cfg.dataset)
 
         trn_batch_size = self.cfg.dataloader.batch_size
         val_batch_size = self.cfg.dataloader.batch_size
@@ -375,6 +390,23 @@ class TrainClassifier:
             self.cfg.dss_args.device = self.cfg.train_args.device
 
             dataloader = GradMatchDataLoader(trainloader, valloader, self.cfg.dss_args, logger,
+                                             batch_size=self.cfg.dataloader.batch_size,
+                                             shuffle=self.cfg.dataloader.shuffle,
+                                             pin_memory=self.cfg.dataloader.pin_memory,
+                                             collate_fn = self.cfg.dss_args.collate_fn)
+            
+        elif self.cfg.dss_args.type in ['SHAPIS','SHAPIS_H','SHAPIS_G',"TracIn","Cosine", 'SHAPISPB', 'SHAPIS-Warm', 'SHAPISPB-Warm']:
+            """
+            ############################## SHAPIS Dataloader Additional Arguments ##############################
+            """
+            self.cfg.dss_args.model = model
+            self.cfg.dss_args.loss = criterion_nored
+            self.cfg.dss_args.eta = self.cfg.optimizer.lr
+            self.cfg.dss_args.num_classes = self.cfg.model.numclasses
+            self.cfg.dss_args.num_epochs = self.cfg.train_args.num_epochs
+            self.cfg.dss_args.device = self.cfg.train_args.device
+
+            dataloader = SHAPISDataLoader(trainloader, valloader, self.cfg.dss_args, logger,
                                              batch_size=self.cfg.dataloader.batch_size,
                                              shuffle=self.cfg.dataloader.shuffle,
                                              pin_memory=self.cfg.dataloader.pin_memory,

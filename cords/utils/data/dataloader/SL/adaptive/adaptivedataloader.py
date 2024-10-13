@@ -66,7 +66,8 @@ class AdaptiveDSSDataLoader(DSSDataLoader):
             self.logger.debug('Epoch: {0:d}, finished reading dataloader. '.format(self.cur_epoch))
         else:
             self.logger.debug('Epoch: {0:d}, reading dataloader... '.format(self.cur_epoch))
-            if ((self.cur_epoch) % self.select_every == 0) and (self.cur_epoch > 1):
+            # if ((self.cur_epoch) % self.select_every == 0) and (self.cur_epoch > 1):
+            if ((self.cur_epoch) % self.select_every == 0):
                 self.resample()
             loader = self.subset_loader
             self.logger.debug('Epoch: {0:d}, finished reading dataloader. '.format(self.cur_epoch))

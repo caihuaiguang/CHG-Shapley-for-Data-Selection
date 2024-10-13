@@ -4,7 +4,7 @@ run it with default arguments using the configuration files provided in CORDS.
 """
 
 
-from train_sl import TrainClassifier
+from cords.train_sl import TrainClassifier
 from cords.utils.config_utils import load_config_data
 
 #CORDS comes with some predefined configuration files that mentiones the format of 

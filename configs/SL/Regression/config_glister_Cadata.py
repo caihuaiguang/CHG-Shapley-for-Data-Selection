@@ -15,7 +15,7 @@ config = dict(setting="supervisedlearning",
                          numclasses=1),
 
               ckpt=dict(is_load=False,
-                        is_save=True,
+                        is_save=False,
                         dir='results/',
                         save_every=20),
 
@@ -40,7 +40,7 @@ config = dict(setting="supervisedlearning",
 
               train_args=dict(num_epochs=500,
                               device="cuda",
-                              print_every=10,
+                              print_every=20,
                               results_dir='results/',
                               print_args=["val_loss",  "tst_loss", "time"],
                               return_args=[]

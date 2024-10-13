@@ -15,7 +15,7 @@ config = dict(setting="SL",
                          numclasses=100),
               
               ckpt=dict(is_load=False,
-                        is_save=True,
+                        is_save=False,
                         dir='results/',
                         save_every=20),
               
@@ -46,7 +46,7 @@ config = dict(setting="SL",
 
               train_args=dict(num_epochs=300,
                               device="cuda",
-                              print_every=10,
+                              print_every=20,
                               run=1,
                               wandb=False,
                               results_dir='results/',

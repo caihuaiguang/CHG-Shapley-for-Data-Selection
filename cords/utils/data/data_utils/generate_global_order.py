@@ -12,6 +12,8 @@ import torch
 import pickle
 import math
 import os
+import sys
+sys.path.append('/home/caihuaiguang/DSG/submodlib')
 import submodlib
 import argparse
 import h5py

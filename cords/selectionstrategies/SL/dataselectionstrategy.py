@@ -117,7 +117,7 @@ class DataSelectionStrategy(object):
         """
         if (perBatch and perClass):
             raise ValueError("batch and perClass are mutually exclusive. Only one of them can be true at a time")
-
+        self.train_loss = []
         embDim = self.model.get_embedding_dim()
         if perClass:
             trainloader = self.pctrainloader
@@ -134,6 +134,7 @@ class DataSelectionStrategy(object):
                 if batch_idx == 0:                
                     out, l1 = self.model(**batch, last=True, freeze=True)
                     loss = self.loss(out, batch['labels'].view(-1)).sum()
+                    self.train_loss.append(self.loss(out, batch['labels'].view(-1)))
                     l0_grads = torch.autograd.grad(loss, out)[0]                    
                     if self.linear_layer:
                         l0_expand = torch.repeat_interleave(l0_grads, embDim, dim=1)
@@ -145,6 +146,7 @@ class DataSelectionStrategy(object):
                 else:                    
                     out, l1 = self.model(**batch, last=True, freeze=True)
                     loss = self.loss(out, batch['labels'].view(-1)).sum()
+                    self.train_loss.append(self.loss(out, batch['labels'].view(-1)))
                     batch_l0_grads = torch.autograd.grad(loss, out)[0]                    
                     if self.linear_layer:
                         batch_l0_expand = torch.repeat_interleave(batch_l0_grads, embDim, dim=1)
@@ -162,6 +164,7 @@ class DataSelectionStrategy(object):
                 if batch_idx == 0:
                     out, l1 = self.model(inputs, last=True, freeze=True)
                     loss = self.loss(out, targets).sum()
+                    self.train_loss.append(self.loss(out, targets))
                     l0_grads = torch.autograd.grad(loss, out)[0]
                     if self.linear_layer:
                         l0_expand = torch.repeat_interleave(l0_grads, embDim, dim=1)
@@ -173,6 +176,7 @@ class DataSelectionStrategy(object):
                 else:
                     out, l1 = self.model(inputs, last=True, freeze=True)
                     loss = self.loss(out, targets).sum()
+                    self.train_loss.append(self.loss(out, targets))
                     batch_l0_grads = torch.autograd.grad(loss, out)[0]
                     if self.linear_layer:
                         batch_l0_expand = torch.repeat_interleave(batch_l0_grads, embDim, dim=1)
@@ -187,7 +191,7 @@ class DataSelectionStrategy(object):
                         l1_grads = torch.cat((l1_grads, batch_l1_grads), dim=0)
 
         torch.cuda.empty_cache()
-
+        self.train_loss = torch.cat(self.train_loss).to(self.device)
         if self.linear_layer:
             self.grads_per_elem = torch.cat((l0_grads, l1_grads), dim=1)
         else:

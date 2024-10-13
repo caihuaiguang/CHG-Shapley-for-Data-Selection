@@ -1,6 +1,7 @@
 from .craigstrategy import CRAIGStrategy
 from .dataselectionstrategy import DataSelectionStrategy
 from .glisterstrategy import GLISTERStrategy
+from .shapisstrategy_10 import SHAPISStrategy
 from .randomstrategy import RandomStrategy
 from .submodularselectionstrategy import SubmodularSelectionStrategy
 from .gradmatchstrategy import GradMatchStrategy

@@ -511,6 +511,11 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
             pass
         else:
             raise KeyError("Specify a classimbratio value in the config file")
+    if feature == 'noise':
+        if 'noise_ratio' in kwargs:
+            pass
+        else:
+            raise KeyError("Specify a noiseratio value in the config file")
 
     if dset_name == "dna":
         trn_file = os.path.join(datadir, 'dna.scale.trn')
@@ -534,7 +539,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
             x_trn, y_trn, x_val, y_val, x_tst, y_tst = create_imbalance(x_trn, y_trn, x_val, y_val,
                                                                         x_tst, y_tst, num_cls, kwargs['classimb_ratio'], seed=seed)
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -687,7 +692,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
             x_trn, y_trn, x_val, y_val, x_tst, y_tst = create_imbalance(x_trn, y_trn, x_val, y_val,
                                                                         x_tst, y_tst, num_cls, kwargs['classimb_ratio'], seed=seed)
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -723,7 +728,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
             x_trn, y_trn, x_val, y_val, x_tst, y_tst = create_imbalance(x_trn, y_trn, x_val, y_val,
                                                                         x_tst, y_tst, num_cls, kwargs['classimb_ratio'], seed=seed)
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -760,7 +765,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
 
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -794,7 +799,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
             x_trn, y_trn, x_val, y_val, x_tst, y_tst = create_imbalance(x_trn, y_trn, x_val, y_val, x_tst, y_tst,
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -827,7 +832,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
 
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -862,7 +867,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
 
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -901,7 +906,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
 
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -932,7 +937,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
 
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -963,7 +968,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
 
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -998,7 +1003,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
 
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -1033,7 +1038,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
 
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
 
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -1066,7 +1071,7 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
             x_trn, y_trn, x_val, y_val, x_tst, y_tst = create_imbalance(x_trn, y_trn, x_val, y_val, x_tst, y_tst,
                                                                         num_cls, kwargs['classimb_ratio'], seed=seed)
         elif feature == 'noise':
-            y_trn = create_noisy(y_trn, num_cls, seed=seed)
+            y_trn = create_noisy(y_trn, num_cls, kwargs['noise_ratio'], seed=seed)
     
         if isnumpy:
             fullset = (x_trn, y_trn)
@@ -1222,6 +1227,8 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                         batch_subset_idxs = list(torch.where(torch.Tensor(fullset.targets) == i)[0].cpu().numpy())
                     subset_idxs.extend(batch_subset_idxs)
             fullset = torch.utils.data.Subset(fullset, subset_idxs)
+        elif feature == 'noise':
+            fullset.targets = create_noisy(np.array(fullset.targets), num_cls, noise_ratio=kwargs['noise_ratio'], seed=seed).tolist()
 
         # validation dataset is (0.1 * train dataset)
         validation_set_fraction = 0.1
@@ -1298,6 +1305,9 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                         batch_subset_idxs = list(torch.where(torch.Tensor(fullset.targets) == i)[0].cpu().numpy())
                     subset_idxs.extend(batch_subset_idxs)
             fullset = torch.utils.data.Subset(fullset, subset_idxs)
+        elif feature == 'noise':
+            print("yes",kwargs['noise_ratio'])
+            fullset.targets = create_noisy(np.array(fullset.targets), num_cls, noise_ratio=kwargs['noise_ratio'], seed=seed).tolist()
 
         # validation dataset is (0.1 * train dataset)
         validation_set_fraction = 0.1
@@ -1353,6 +1363,8 @@ def gen_dataset(datadir, dset_name, feature, seed=42, isnumpy=False, **kwargs):
                         batch_subset_idxs = list(torch.where(torch.Tensor(fullset.targets) == i)[0].cpu().numpy())
                     subset_idxs.extend(batch_subset_idxs)
             fullset = torch.utils.data.Subset(fullset, subset_idxs)
+        elif feature == 'noise':
+            fullset.targets = create_noisy(np.array(fullset.targets), num_cls, noise_ratio=kwargs['noise_ratio'], seed=seed).tolist()
 
         # validation dataset is (0.1 * train dataset)
         validation_set_fraction = 0.1

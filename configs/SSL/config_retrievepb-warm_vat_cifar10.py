@@ -26,7 +26,7 @@ config = dict(setting="SSL",
                          numclasses=10),
 
               ckpt=dict(is_load=False,
-                        is_save=True,
+                        is_save=False,
                         checkpoint_model='model.ckpt',
                         checkpoint_optimizer='optimizer.ckpt',
                         start_iter=None,
